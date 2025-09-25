@@ -31,7 +31,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: $latest_tag
+          tag_name: ${{ steps.get-tag.outputs.tag_name }}
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -42,5 +42,5 @@ jobs:
 
       - name: Move Major Version Tag (v1)
         run: |
-          git tag -f v1
-          git push origin v1 --force
+          git tag -f ${{ steps.get-tag.outputs.tag_name }}
+          git push origin ${{ steps.get-tag.outputs.tag_name }} --force
