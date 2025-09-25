@@ -3,7 +3,7 @@ name: Release Notes
 on:
   push:
     tags:
-      - "*.*.*"
+      - "v*.*.*"
 
 permissions:
   contents: write
@@ -22,7 +22,4 @@ jobs:
         run: echo ${{ github.sha }} > Release.txt
 
       - name: Release
-        uses: softprops/action-gh-release@v1
-        if: github.ref_type == 'tag'
-        with:
-          files: Release.txt
+        uses: softprops/action-gh-release@v2
