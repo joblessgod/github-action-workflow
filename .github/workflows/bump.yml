@@ -9,16 +9,14 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     permissions:
-      contents: write  # Ensure write permissions are granted for pushing the tag
-
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: "0"  # Fetch entire history to ensure correct version bumping
+          fetch-depth: "0"
 
       - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@v1  # Use a stable release version
-        with:
-          tag-prefix: 'v'  # Add the 'v' prefix to the version tag (e.g., v1.0.0)
+        uses: anothrNick/github-tag-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_PREFIX: v
