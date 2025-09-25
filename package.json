@@ -1,0 +1,30 @@
+{
+  "name": "github-action-workflow",
+  "version": "1.0.0",
+  "description": "again",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joblessgod/github-action-workflow.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/joblessgod/github-action-workflow/issues"
+  },
+  "homepage": "https://github.com/joblessgod/github-action-workflow#readme",
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/github",
+      "@semantic-release/npm"
+    ]
+  }
+}
