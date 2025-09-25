@@ -26,11 +26,11 @@ jobs:
           echo "Latest tag: $latest_tag"
           echo "tag_name=$latest_tag" >> "$GITHUB_OUTPUT"
 
-          - name: Create GitHub Release
-            uses: softprops/action-gh-release@v2
-            with:
-            tag_name: v1
-            generate_release_notes: true
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
