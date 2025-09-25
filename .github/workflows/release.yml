@@ -3,7 +3,7 @@ name: Release Workflow
 on:
   push:
     tags:
-      - 'v*'  # Trigger only for tags, adjust the pattern as needed
+      - '*'  # Trigger only for tags, adjust the pattern as needed
 
 permissions:
   contents: write
