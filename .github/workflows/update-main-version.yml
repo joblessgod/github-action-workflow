@@ -1,4 +1,4 @@
-name: Update Major Version Tag
+name: Semantic Release + Update Major Tag
 
 on:
   push:
@@ -6,13 +6,35 @@ on:
       - main
 
 jobs:
-  update-tag:
-    if: github.event.head_commit.message != ''
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # required to push tags and create releases
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # get full git history so tags are visible
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install semantic-release
+        run: npm install -g semantic-release@21
+
+      - name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: semantic-release
+
+  move-major-tag:
+    needs: release
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -21,26 +43,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Get latest tag
+      - name: Get latest v1.x tag
         id: get-tag
         run: |
-          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          latest_tag=$(git tag --sort=-v:refname | grep '^v1\.' | head -n 1)
           echo "Latest tag: $latest_tag"
           echo "tag_name=$latest_tag" >> "$GITHUB_OUTPUT"
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.get-tag.outputs.tag_name }}
-          generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Use tag
+      - name: Move `v1` tag to latest v1.x
         run: |
-          echo "We got the tag: ${{ steps.get-tag.outputs.tag_name }}"
-
-      - name: Move Major Version Tag (v1)
-        run: |
-          git tag -f ${{ steps.get-tag.outputs.tag_name }}
-          git push origin ${{ steps.get-tag.outputs.tag_name }} --force
+          git tag -f v1 ${{ steps.get-tag.outputs.tag_name }}
+          git push origin v1 --force
