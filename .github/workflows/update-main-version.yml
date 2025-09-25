@@ -9,6 +9,8 @@ jobs:
   update-tag:
     if: github.event.head_commit.message != ''
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
         with:
@@ -29,7 +31,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1
+          tag_name: $latest_tag
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
