@@ -1,19 +1,19 @@
 name: Release Notes
 
-on: 
+on:
   push:
     tags:
       - "*.*.*"
 
 permissions:
   contents: write
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/Checkout@v5
+        uses: actions/checkout@v2
 
       - name: Test
         run: cat Release.txt
@@ -22,7 +22,7 @@ jobs:
         run: echo ${{ github.sha }} > Release.txt
 
       - name: Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v1
         if: github.ref_type == 'tag'
         with:
           files: Release.txt
