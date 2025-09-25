@@ -24,7 +24,7 @@ jobs:
         run: |
           latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "Latest tag: $latest_tag"
-          echo "tag_name=${latest_tag}" >> $GITHUB_OUTPUT
+          echo "tag_name=$latest_tag" >> "$GITHUB_OUTPUT"
 
           - name: Create GitHub Release
             uses: softprops/action-gh-release@v2
@@ -34,8 +34,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Use tag
+        run: |
+          echo "We got the tag: ${{ steps.get-tag.outputs.tag_name }}"
+
       - name: Move Major Version Tag (v1)
         run: |
           git tag -f v1
           git push origin v1 --force
-          
